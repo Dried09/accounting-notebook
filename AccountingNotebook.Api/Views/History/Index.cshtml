@@ -1,0 +1,72 @@
+﻿@using AccountingNotebook.Core.Models
+@using AccountingNotebook.Common
+
+@{
+    Layout = null;
+}
+
+@model List<TransactionModel>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Accounting notebook</title>
+    <link rel="stylesheet" href="~/lib/twitter-bootstrap/css/bootstrap.min.css" />
+    <style>
+        .badge-fix-size {
+            width: 48px;
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container px-0">
+        <nav class="navbar navbar-light bg-light">
+            <span class="navbar-brand mb-0 h1">Accounting notebook</span>
+        </nav>
+        <main class="content p-3">
+            <h5>Transaction history</h5>
+            @if (Model.Count() == 0)
+            {
+                <div class="d-flex flex-row justify-content-center my-5">
+                    <span>No transactions performed yet</span>
+                </div>
+            }
+            else
+            {
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    <div class="d-flex flex-row justify-content-between p-2">
+                        <div class="d-flex flex-row justify-content-start m-2">
+                            @if (Model[i].Type == TransactionType.Debit)
+                            {
+                                <div class="badge badge-success badge-fix-size mr-2">Debit</div>
+                            }
+                            else
+                            {
+                                <div class="badge badge-danger badge-fix-size mr-2">Credit</div>
+                            }
+                            <div>Transaction @Model[i].Amount at @Model[i].EffectiveDate</div>
+                        </div>
+                        <button class="btn btn-outline-info" type="button" data-toggle="collapse" data-target="#collapseExample-@i" aria-expanded="false" aria-controls="collapseExample-@i">
+                            Show more...
+                        </button>
+                    </div>
+                    <div class="collapse m-2" id="collapseExample-@i">
+                        <div class="card card-body">
+                            <p><span class="font-weight-bold mr-2">Transaction id:</span> @Model[i].Id</p>
+                            <p><span class="font-weight-bold mr-2">Transaction type:</span> @Model[i].Type</p>
+                            <p><span class="font-weight-bold mr-2">Transaction amount:</span> @Model[i].Amount</p>
+                            <p><span class="font-weight-bold mr-2">Transaction effective date:</span> @Model[i].EffectiveDate</p>
+                        </div>
+                    </div>
+                }
+            }
+        </main>
+    </div>
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/twitter-bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>
